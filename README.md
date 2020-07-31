@@ -34,7 +34,9 @@ kubectl patch pv pvc-5a4bae38-6029-41bf-8023-96237d7758ee -p '{"spec":{"persiste
 ```
 ## scale the pod to 0 replicas
 ```
-kubectl scale --replicas=0 rs/wordpress-mysql-56ff98b6b
+kubectl get deployments
+kubectl scale --current-replicas=1 --replicas=0 deployment/wordpress-mysql
+
 ```
 ## delete the PVC
 ```
@@ -46,7 +48,12 @@ kubectl apply -f restore.yaml --validate=false
 ```
 ## scale up the replicas 
 ```
-kubectl scale --replicas=1 rs/wordpress-mysql-56ff98b6b
+kubectl scale --current-replicas=0 --replicas=1 deployment/wordpress-mysql
 ```
-ls
+## App is now restored to prior state
+```
 kubectl get pods 
+```
+refresh browser to see that site has reverted to previous config
+
+
