@@ -11,14 +11,22 @@ kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/maste
 Make some changes to your data on sql
 ---
 
-## create snapshot of volume
+## create and apply snapshot of volume
 ```
 vim snapshot.yaml
+apiVersion: snapshot.storage.k8s.io/v1alpha1
+kind: VolumeSnapshot
+metadata:
+  name: mysql-pv-snapshot
+spec:
+  snapshotClassName: pure-snapshotclass
+  source:
+    name: mysql-pv-claim
+    kind: PersistentVolumeClaim
+
+```
 kubectl apply -f snapshot.yaml
 ```
-## apply snapshot
-```
-kubectl apply -f snapshot.yaml --validate=false
 ```
 ## list snapshots 
 ```
